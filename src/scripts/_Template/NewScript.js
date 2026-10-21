@@ -1,16 +1,16 @@
 // ============================================================================
-// NewScript.js  -  Kurzbeschreibung
+// NewScript.js  -  Short description
 // ============================================================================
 
-#feature-id    Utilities > New Script
-#feature-info  Kurzbeschreibung fuer den Feature-Dialog.
+#feature-id    pmneoAstro > New Script
+#feature-info  Short description for the feature dialog.
 
 function main()
 {
    console.show();
    var win = ImageWindow.activeWindow;
    if (win.isNull)
-      throw new Error("Kein Bild aktiv.");
+      throw new Error("No image is active.");
    console.writeln("<b>New Script</b> auf " + win.mainView.id);
 }
 

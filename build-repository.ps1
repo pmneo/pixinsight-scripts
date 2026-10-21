@@ -1,10 +1,10 @@
-# Baut das PixInsight-Script-Repository:
-#   repository\<datum>-all.zip   enthaelt src\scripts\... (Pfade relativ zum PixInsight-Installationsordner)
-#   repository\updates.xri       Paketliste mit SHA-1 (Datei, die PixInsight als Repository-URL abruft)
+# Builds the PixInsight script repository:
+#   repository\<date>-all.zip   contains src\scripts\... (paths relative to the PixInsight installation folder)
+#   repository\updates.xri      package list with SHA-1 (the file PixInsight fetches as the repository URL)
 #
-# Aufruf:  powershell -ExecutionPolicy Bypass -File build-repository.ps1
-# Danach den Inhalt von "repository" auf einen Webserver legen (z.B. GitHub Pages)
-# und die URL in PixInsight unter Resources > Updates > Manage Repositories eintragen.
+# Usage:  powershell -ExecutionPolicy Bypass -File build-repository.ps1
+# Afterwards put the contents of "repository" on a web server (e.g. GitHub Pages)
+# and enter the URL in PixInsight under Resources > Updates > Manage Repositories.
 
 $ErrorActionPreference = 'Stop'
 Add-Type -AssemblyName System.IO.Compression
@@ -18,12 +18,12 @@ $stamp   = $date.ToString('yyyyMMdd')
 $zipName = "$stamp-all.zip"
 $zipPath = Join-Path $outDir $zipName
 
-# ---- Metadaten (nach Bedarf anpassen) -------------------------------------
+# ---- Metadata (adjust as needed) ------------------------------------------
 $repoTitle   = 'ASI2600 Scripts'
-$repoDesc    = 'Persoenliche Sammlung von PixInsight-Skripten.'
+$repoDesc    = 'Personal collection of PixInsight scripts.'
 $pkgTitle    = 'ASI2600 Scripts'
-$pkgDesc     = 'Sammlung von PixInsight-Skripten (u.a. SXT ShiftAverage, SXT ShiftMedian).'
-$pixVersion  = '1.8.9:2.0.0'   # unterstuetzter PixInsight-Versionsbereich
+$pkgDesc     = 'SXT Shift: StarXTerminator with a shifted tile grid, weighted mean and/or median, with dialog (requires StarXTerminator). Gaia Star Colors: recolors SHO stars with Gaia DR3 colors to get RGB stars (requires PixInsight 1.9.5 or newer).'
+$pixVersion  = '1.8.9:2.0.0'   # supported PixInsight version range
 # ---------------------------------------------------------------------------
 
 New-Item -ItemType Directory -Force $outDir | Out-Null
@@ -61,5 +61,5 @@ $xri = @"
 "@
 [System.IO.File]::WriteAllText((Join-Path $outDir 'updates.xri'), $xri, (New-Object System.Text.UTF8Encoding($false)))
 
-Write-Host "Fertig: $zipPath"
+Write-Host "Done: $zipPath"
 Write-Host "SHA-1:  $sha1"

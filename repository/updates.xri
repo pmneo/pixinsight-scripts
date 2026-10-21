@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xri version="1.0">
    <description>
-      <p>Persoenliche Sammlung von PixInsight-Skripten.</p>
+      <p>Personal collection of PixInsight scripts.</p>
    </description>
    <title>ASI2600 Scripts</title>
-   <package fileName="20261014-all.zip" sha1="ee001753e27913f990a647c400a04bb2b4f9b6d4" type="script">
+   <package fileName="20261021-all.zip" sha1="7ff1bd1b8126c67f06583c4f656dc4bbd7327e52" type="script">
       <title>ASI2600 Scripts</title>
       <description>
-         <p>Sammlung von PixInsight-Skripten (u.a. SXT ShiftAverage, SXT ShiftMedian).</p>
+         <p>SXT Shift: StarXTerminator with a shifted tile grid, weighted mean and/or median, with dialog (requires StarXTerminator). Gaia Star Colors: recolors SHO stars with Gaia DR3 colors to get RGB stars (requires PixInsight 1.9.5 or newer).</p>
       </description>
       <platform os="all" arch="noarch" version="1.8.9:2.0.0"/>
-      <releaseDate>2026-10-14</releaseDate>
+      <releaseDate>2026-10-21</releaseDate>
    </package>
 </xri>

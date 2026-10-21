@@ -1,40 +1,53 @@
-# ASI2600 Scripts – PixInsight Script-Repository
+# ASI2600 Scripts – PixInsight script repository
 
-Enthält:
+Contains:
 
-- **SXT ShiftAverage** – StarXTerminator mehrfach mit verschobenem Kachelraster, gewichteter Mittelwert
-- **SXT ShiftMedian** – wie oben, aber gewichteter Median
+- **SXT Shift** – runs StarXTerminator several times with a shifted tile grid; weighted mean and/or median; parameters via dialog
+- **Gaia Star Colors** – recolors a star image (e.g. SHO stars without background) with Gaia DR3 colors (BP−RP) to get RGB stars; the brightness stays from the image; parameters via dialog
 
-Menüeintrag nach Installation: `Script > Utilities > SXT ShiftAverage / SXT ShiftMedian`.
+Menu entries after installation: `Script > pmneoAstro > SXT Shift` and `Script > pmneoAstro > Gaia Star Colors`.
 
-## Struktur
+## Installation
+
+1. In PixInsight open `Resources > Updates > Manage Repositories > Add` and enter
+   `https://pmneo.github.io/pixinsight-scripts/repository/` (**with the trailing `/`**).
+2. `Resources > Updates > Check for Updates` installs the scripts.
+
+## Structure
 
 ```
-src/scripts/SXT_ShiftTools/*.js   Quellen (Pfad entspricht dem PixInsight-Installationsordner)
-build-repository.ps1              erzeugt repository/updates.xri + repository/<datum>-all.zip
-repository/                       Inhalt, der auf den Webserver kommt
+src/scripts/SXT_ShiftTools/*.js   sources (the path matches the PixInsight installation folder)
+src/scripts/Gaia_StarColors/*.js  dto.
+build-repository.ps1              creates repository/updates.xri + repository/<date>-all.zip
+repository/                       content that is served by the web server (GitHub Pages)
 ```
 
-## Repository veröffentlichen
+## Publishing the repository
 
 1. `powershell -ExecutionPolicy Bypass -File build-repository.ps1`
-2. Den Ordner `repository/` auf einen Webserver legen, z. B. GitHub Pages
-   (URL dann `https://<user>.github.io/<repo>/`, die `updates.xri` liegt direkt darin).
-3. In PixInsight: `Resources > Updates > Manage Repositories > Add`, URL **mit abschließendem `/`** eintragen.
-4. `Resources > Updates > Check for Updates` installiert die Skripte.
+2. Commit and push the sources and the `repository/` folder to `main`. GitHub Pages serves the root of the branch,
+   so the update repository ends up at `https://pmneo.github.io/pixinsight-scripts/repository/`
+   (the `updates.xri` lies directly inside).
+3. In PixInsight use that URL (with the trailing `/`) as described under *Installation*.
 
-Bei jeder neuen Version das Skript erneut ausführen und `repository/` neu hochladen
-(die zip bekommt das Datum im Namen, die SHA-1 wird automatisch in der `updates.xri` aktualisiert).
+For every new version run the build script again and push `repository/`
+(the zip gets the date in its name, the SHA-1 in `updates.xri` is updated automatically).
 
-## Hinweise
+## Notes
 
-- Voraussetzung: StarXTerminator ist installiert.
-- Optional ein Prozess-Icon namens `SXT` mit eigenen SXT-Einstellungen anlegen.
-- Versionsbereich in `build-repository.ps1` (`$pixVersion`) ggf. an die eigene PixInsight-Version anpassen.
+- Requirement for SXT Shift: StarXTerminator is installed.
+- Optionally create a process icon named `SXT` with your own SXT settings.
+- Requirements for Gaia Star Colors: PixInsight 1.9.5 or newer (V8 engine); the active image is a plate-solved
+  stars-only image (ImageSolver); Gaia DR3 as a local XPSD database or online via VizieR.
+  The result is a new window `<id>_RGB` with the astrometric solution and the STF of the source image.
+  Stars without a Gaia entry (or without BP/RP) get a color estimated from their narrowband color: from the matched
+  stars the script learns `BP−RP ≈ a + b·log(C3/C2) + c·log(C1/C2)` (e.g. O/H and S/H for SHO). The console prints R²;
+  if the relation is too weak (R² < 0.2) these stars stay neutral.
+- Adjust the version range in `build-repository.ps1` (`$pixVersion`) to your own PixInsight version if necessary.
 
-## Neues Skript hinzufügen
+## Adding a new script
 
-1. Ordner `src/scripts/<Name>/` anlegen (Vorlage: `src/scripts/_Template/NewScript.js` kopieren;
-   Ordner mit `_`-Präfix wie `_Template` werden nicht ausgeliefert).
-2. `#feature-id Kategorie > Name` und `#feature-info` im Skript setzen.
-3. `build-repository.ps1` ausführen – alle `.js` unter `src/` landen automatisch im Paket.
+1. Create a folder `src/scripts/<Name>/` (template: copy `src/scripts/_Template/NewScript.js`;
+   folders with a `_` prefix such as `_Template` are not shipped).
+2. Set `#feature-id Category > Name` and `#feature-info` in the script.
+3. Run `build-repository.ps1` – all `.js` files under `src/` end up in the package automatically.
